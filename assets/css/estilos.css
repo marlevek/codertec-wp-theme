@@ -1,0 +1,39 @@
+body { background-color: #f8f9fa; color: #212529; }
+.navbar { background-color: #c1d7ec; }
+.navbar-brand, .nav-link { color: #002244 !important; }
+.btn-primary { background-color: #3782cc; border: none; }
+.btn-primary:hover { background-color: #002244; }
+.footer { background-color: #052441; color: #cedff0; padding: 10px 0; text-align: center; }
+p {font-size: large;}
+.text_bold{font-weight: bold;}
+li{line-height: 2.5em;}
+.bi{color: #3782cc;}
+.bi-instagram{font-size: 1.5em; color: #cedff0;}
+.text_card{padding-left: 1.5em;}
+.instagram a, a:link, a:visited, a:active{color:#cedff0}
+.card-title{font-size: larger; font-weight: bolder;}
+.titulos, .titulos * {font-size: 2em !important; font-weight: bold !important;}
+
+
+/* Estilos botão voltar ao topo */
+#btnVoltarAoTopo {
+    display: none; /* Oculta o botão inicialmente */
+    position: fixed; /* Fixa o botão na tela */
+    bottom: 20px; /* Distância do fundo */
+    right: 20px; /* Distância da direita */
+    z-index: 99; /* Garante que o botão fique acima de outros elementos */
+    border: none; /* Remove borda */
+    outline: none; /* Remove contorno */
+    background-color: #021830; /* Cor de fundo */
+    color: white; /* Cor do ícone */
+    cursor: pointer; /* Muda o cursor para pointer */
+    padding: 10px; /* Espaçamento interno */
+    border-radius: 50%; /* Deixa o botão redondo */
+    font-size: 24px; /* Tamanho do ícone */
+    transition: background-color 0.3s; /* Efeito de transição suave */
+}
+
+#btnVoltarAoTopo:hover {
+    background-color: #0056b3; /* Muda a cor ao passar o mouse */
+}
+

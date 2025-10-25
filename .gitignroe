@@ -1,0 +1,15 @@
+# Lixo do Windows
+Thumbs.db
+Desktop.ini
+
+# VSCode
+.vscode/
+
+# Node (caso você tenha build de css/js)
+node_modules/
+dist/
+*.map
+
+# Arquivos de ambiente
+.env
+.env.*
