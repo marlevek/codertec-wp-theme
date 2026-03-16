@@ -1,8 +1,8 @@
 <?php get_header(); ?>
 
 <div class="container my-5">
-  <h1 class="text-center mb-4">Postagens do Blog</h1>
-  <p class="text-dark text-center pb-4">Acompanhe nossas postagens e traga esses conceitos para a realidade do seu negócio.</p>
+  <h1 class="text-center mb-3">Resultados da busca</h1>
+  <p class="text-dark text-center pb-3">Você pesquisou por: <strong><?php echo esc_html(get_search_query()); ?></strong></p>
 
   <div class="blog-search-wrapper mb-5">
     <?php get_search_form(); ?>
@@ -25,7 +25,7 @@
         </div>
       </div>
     <?php endwhile; else : ?>
-      <p class="text-center">Nenhum post encontrado.</p>
+      <p class="text-center blog-search-empty">Nenhum post encontrado para sua busca. Tente outro termo.</p>
     <?php endif; ?>
   </div>
 </div>

@@ -7,8 +7,6 @@
     <meta name="description" content="CoderTec - Desenvolvimento de apps web, ciência de dados, IA e automação com Python para pequenas empresas.">
     <meta name="keywords" content="desenvolvimento web, ciência de dados, IA, automação, Dashboards, pequenas empresas">
     <meta name="author" content="CoderTec">
-    <title><?php bloginfo('name'); ?> | <?php is_front_page() ? bloginfo('description') : wp_title(''); ?></title>
-
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <script src="https://kit.fontawesome.com/889104c503.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">

@@ -179,6 +179,43 @@ a:active {
     /* Muda a cor ao passar o mouse */
 }
 
+.codertec-product-cta {
+    padding: 2rem;
+    border: 1px solid #c1d7ec;
+    border-radius: 1rem;
+    background: linear-gradient(135deg, #eef5fb 0%, #ffffff 100%);
+}
+
+.codertec-product-cta p {
+    font-size: 1rem;
+    margin-bottom: 0;
+}
+
+.codertec-product-cta__secondary {
+    border-color: #3782cc;
+    color: #3782cc;
+}
+
+.codertec-product-cta__secondary:hover,
+.codertec-product-cta__secondary:focus {
+    background-color: #3782cc;
+    border-color: #3782cc;
+    color: #ffffff;
+}
+
+.blog-search-wrapper {
+    max-width: 860px;
+    margin: 0 auto;
+}
+
+.blog-search-form .form-control {
+    border: 1px solid #c1d7ec;
+}
+
+.blog-search-empty {
+    font-size: 1.1rem;
+}
+
 /* Estilo para telas maiores (acima de 768px) */
 @media (min-width: 768px) {
     .social-links {
