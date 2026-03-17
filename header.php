@@ -4,18 +4,13 @@
 <head>
     <meta charset="<?php bloginfo('charset'); ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="CoderTec - Desenvolvimento de apps web, ciência de dados, IA e automação com Python para pequenas empresas.">
-    <meta name="keywords" content="desenvolvimento web, ciência de dados, IA, automação, Dashboards, pequenas empresas">
+    <meta name="description" content="<?php echo esc_attr(codertec_get_meta_description()); ?>">
     <meta name="author" content="CoderTec">
+    <?php codertec_render_head_meta(); ?>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <script src="https://kit.fontawesome.com/889104c503.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link rel="stylesheet" href="<?php echo get_template_directory_uri(); ?>/assets/css/estilos.css">
-    <link rel="shortcut icon" href="<?php echo get_template_directory_uri(); ?>/static/images/favicon.png" type="image/x-icon">
-   
-
-
-
 
     <?php wp_head(); ?>
 </head>
@@ -30,11 +25,10 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="https://codertec.com.br/#sobre">Sobre</a></li>
-                    <li class="nav-item"><a class="nav-link" href="https://codertec.com.br/#servicos">Serviços</a></li>
-                    <li class="nav-item"><a class="nav-link" href="https://codertec.com.br/#missao">Missão</a></li>
-                    <li class="nav-item"><a class="nav-link" href="https://codertec.com.br/#contato">Contato</a></li>
                     <li class="nav-item"><a class="nav-link" href="https://codertec.com.br/blog/">Blog</a></li>
+                    <li class="nav-item"><a class="nav-link" href="<?php echo esc_url(codertec_get_categories_page_url()); ?>">Categorias</a></li>
+                    <li class="nav-item"><a class="nav-link" href="https://codertec.com.br/pt/" <?php echo codertec_get_tracking_attributes(array('url' => 'https://codertec.com.br/pt/', 'type' => 'navigation', 'area' => 'header_navigation', 'label' => 'Site da CoderTec')); ?>>Site da CoderTec</a></li>
+                    <li class="nav-item"><a class="nav-link" href="https://codertec.com.br/pt/index.html#contato" <?php echo codertec_get_tracking_attributes(array('url' => 'https://codertec.com.br/pt/index.html#contato', 'type' => 'navigation', 'area' => 'header_navigation', 'label' => 'Contato')); ?>>Contato</a></li>
                 </ul>
             </div>
         </div>

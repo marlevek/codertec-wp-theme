@@ -28,6 +28,8 @@
       <p class="text-center blog-search-empty">Nenhum post encontrado para sua busca. Tente outro termo.</p>
     <?php endif; ?>
   </div>
+
+  <?php codertec_render_institutional_cta(); ?>
 </div>
 
 <?php get_footer(); ?>

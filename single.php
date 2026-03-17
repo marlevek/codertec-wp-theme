@@ -1,14 +1,33 @@
 <?php get_header(); ?>
 
-<div class="container py-5">
-    <h1 class="mb-3"><?php the_title(); ?></h1>
-    <p class="text-muted">Publicado em <?php echo get_the_date(); ?></p>
-    <div class="mt-1"></div>
+<?php
+$post_id = get_the_ID();
+$published_date = get_the_date('', $post_id);
+$modified_date = get_the_modified_date('', $post_id);
+$reading_time = codertec_get_post_reading_time_label($post_id);
+?>
+
+<article class="container py-5 codertec-single-post">
+    <header class="codertec-single-post__header mb-4">
+        <?php echo codertec_get_post_categories_markup($post_id, 'mb-3'); ?>
+        <h1 class="mb-3"><?php the_title(); ?></h1>
+
+        <div class="codertec-single-post__meta">
+            <span>Publicado em <?php echo esc_html($published_date); ?></span>
+            <?php if ($modified_date && $modified_date !== $published_date) : ?>
+                <span>Atualizado em <?php echo esc_html($modified_date); ?></span>
+            <?php endif; ?>
+            <span><?php echo esc_html($reading_time); ?></span>
+        </div>
+    </header>
+
     <div class="post-content">
         <?php the_content(); ?>
     </div>
 
-    <?php codertec_render_psicoassist_cta(get_the_ID()); ?>
+    <?php echo codertec_get_post_tags_markup($post_id, 'mt-4'); ?>
+
+    <?php codertec_render_single_post_conversion_section($post_id); ?>
 
     <div class="post-share mt-5 pt-4 border-top border-2 border-secondary">
         <p class="h5 mb-3">Gostou do post? Ent&atilde;o bora compartilhar!</p>
@@ -42,6 +61,6 @@
     </div>
 
     <a href="/blog/" class="btn btn-secondary mt-5 mb-1">&larr; Voltar ao Blog</a>
-</div>
+</article>
 
 <?php get_footer(); ?>

@@ -15,9 +15,6 @@
     <i class="bi bi-arrow-up-circle"></i>
 </button>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="<?php echo get_template_directory_uri(); ?>/static/js/btn_topo.js"></script>
-
 <?php wp_footer(); ?>
 </body>
 
