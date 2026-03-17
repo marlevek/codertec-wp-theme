@@ -5,7 +5,7 @@ Desktop.ini
 # VSCode
 .vscode/
 
-# Node (caso você tenha build de css/js)
+# Node (caso voce tenha build de css/js)
 node_modules/
 dist/
 *.map
@@ -13,3 +13,5 @@ dist/
 # Arquivos de ambiente
 .env
 .env.*
+
+*.xlsx
