@@ -214,12 +214,15 @@ function codertec_get_tracking_destination_key($url = '') {
         return 'contato_codertec';
     }
 
-    if (false !== strpos($url, 'codertec.com.br/pt/produtos/psicoassist/')) {
-        return 'psicoassist_resumo';
-    }
-
-    if (false !== strpos($url, 'psicoassist.codertec.com.br')) {
-        return 'psicoassist_landing';
+    if (
+        false !== strpos($url, 'codertec.com.br/pt/produtos/psicosense/')
+        || false !== strpos($url, 'codertec.com.br/pt/produtos/psicoassist/')
+        || false !== strpos($url, 'https://psicosense.com.br/')
+        || false !== strpos($url, 'app.psicosense.com.br')
+        || false !== strpos($url, 'psicosense.codertec.com.br')
+        || false !== strpos($url, 'psicoassist.codertec.com.br')
+    ) {
+        return 'psicosense_landing';
     }
 
     if (false !== strpos($url, 'manugest.com.br')) {
@@ -571,11 +574,11 @@ function codertec_render_institutional_cta() {
     ?>
     <section class="codertec-institutional-cta mt-5" aria-label="Conheça as soluções da CoderTec">
         <h2 class="h4 mb-3">Leve essa ideia para a prática com a CoderTec</h2>
-        <p class="mb-4">Conheça nossos serviços, explore o PsicoAssist e fale com a equipe da CoderTec para transformar tecnologia em resultado no seu negócio.</p>
+        <p class="mb-4">Conheça nossos serviços, explore o Psicosense e fale com a equipe da CoderTec para transformar tecnologia em resultado no seu negócio.</p>
         <div class="codertec-institutional-cta__actions">
             <a class="btn btn-primary" href="https://codertec.com.br/pt/index.html#servicos" <?php echo codertec_get_tracking_attributes(array('url' => 'https://codertec.com.br/pt/index.html#servicos', 'area' => $area, 'label' => 'Conhecer serviços')); ?>>Conhecer serviços</a>
             <a class="btn btn-outline-primary codertec-institutional-cta__secondary" href="https://codertec.com.br/pt/" <?php echo codertec_get_tracking_attributes(array('url' => 'https://codertec.com.br/pt/', 'area' => $area, 'label' => 'Site da CoderTec')); ?>>Site da CoderTec</a>
-            <a class="btn btn-outline-primary codertec-institutional-cta__secondary" href="https://codertec.com.br/pt/produtos/psicoassist/" <?php echo codertec_get_tracking_attributes(array('url' => 'https://codertec.com.br/pt/produtos/psicoassist/', 'area' => $area, 'label' => 'Ver PsicoAssist')); ?>>Ver PsicoAssist</a>
+            <a class="btn btn-outline-primary codertec-institutional-cta__secondary" href="https://psicosense.com.br/" <?php echo codertec_get_tracking_attributes(array('url' => 'https://psicosense.com.br/', 'area' => $area, 'label' => 'Conhecer o Psicosense')); ?>>Conhecer o Psicosense</a>
             <a class="btn btn-outline-primary codertec-institutional-cta__secondary" href="https://manugest.com.br/" <?php echo codertec_get_tracking_attributes(array('url' => 'https://manugest.com.br/', 'area' => $area, 'label' => 'Conhecer o Manugest')); ?>>Conhecer o Manugest</a>
             <a class="btn btn-outline-primary codertec-institutional-cta__secondary" href="https://codertec.com.br/pt/index.html#contato" <?php echo codertec_get_tracking_attributes(array('url' => 'https://codertec.com.br/pt/index.html#contato', 'area' => $area, 'label' => 'Entrar em contato')); ?>>Entrar em contato</a>
         </div>
@@ -629,6 +632,31 @@ function codertec_flush_categories_page_route() {
 }
 add_action('init', 'codertec_flush_categories_page_route', 20);
 
+function codertec_redirect_legacy_psicosense_product_url() {
+    if (is_admin()) {
+        return;
+    }
+
+    $request_uri = isset($_SERVER['REQUEST_URI']) ? wp_unslash((string) $_SERVER['REQUEST_URI']) : '';
+    $request_path = wp_parse_url($request_uri, PHP_URL_PATH);
+
+    if (!is_string($request_path) || '' === $request_path) {
+        return;
+    }
+
+    $normalized_request_path = trailingslashit($request_path);
+    $legacy_path = trailingslashit((string) wp_parse_url(home_url('/pt/produtos/psicoassist/'), PHP_URL_PATH));
+    $mistaken_path = trailingslashit((string) wp_parse_url(home_url('/pt/produtos/psicosense/'), PHP_URL_PATH));
+
+    if ($normalized_request_path !== $legacy_path && $normalized_request_path !== $mistaken_path) {
+        return;
+    }
+
+    wp_safe_redirect('https://psicosense.com.br/', 301);
+    exit;
+}
+add_action('template_redirect', 'codertec_redirect_legacy_psicosense_product_url', 1);
+
 function codertec_limit_search_to_posts($query) {
     if (is_admin() || !$query->is_main_query() || !$query->is_search()) {
         return;
@@ -678,11 +706,11 @@ function codertec_search_posts_by_title_only($search, $query) {
 }
 add_filter('posts_search', 'codertec_search_posts_by_title_only', 10, 2);
 
-function codertec_normalize_psicoassist_context_value($value) {
+function codertec_normalize_psicosense_context_value($value) {
     return sanitize_title(wp_strip_all_tags((string) $value));
 }
 
-function codertec_should_display_psicoassist_cta($post_id = 0) {
+function codertec_should_display_psicosense_cta($post_id = 0) {
     $post_id = $post_id ?: get_the_ID();
 
     if (!$post_id || 'post' !== get_post_type($post_id)) {
@@ -690,6 +718,7 @@ function codertec_should_display_psicoassist_cta($post_id = 0) {
     }
 
     $keywords = array(
+        'psicosense',
         'psicoassist',
         'psicologia',
         'psicologo',
@@ -715,8 +744,8 @@ function codertec_should_display_psicoassist_cta($post_id = 0) {
     );
 
     $post_context_values = array(
-        codertec_normalize_psicoassist_context_value(get_post_field('post_name', $post_id)),
-        codertec_normalize_psicoassist_context_value(get_the_title($post_id)),
+        codertec_normalize_psicosense_context_value(get_post_field('post_name', $post_id)),
+        codertec_normalize_psicosense_context_value(get_the_title($post_id)),
     );
 
     foreach ($post_context_values as $context_value) {
@@ -743,8 +772,8 @@ function codertec_should_display_psicoassist_cta($post_id = 0) {
 
     foreach ($terms as $term) {
         $context_values = array(
-            codertec_normalize_psicoassist_context_value($term->slug),
-            codertec_normalize_psicoassist_context_value($term->name),
+            codertec_normalize_psicosense_context_value($term->slug),
+            codertec_normalize_psicosense_context_value($term->name),
         );
 
         foreach ($context_values as $context_value) {
@@ -763,20 +792,21 @@ function codertec_should_display_psicoassist_cta($post_id = 0) {
         }
     }
 
+    $should_display = (bool) apply_filters('codertec_should_display_psicosense_cta', $should_display, $post_id, $terms);
+
     return (bool) apply_filters('codertec_should_display_psicoassist_cta', $should_display, $post_id, $terms);
 }
 
-function codertec_render_psicoassist_cta($post_id = 0) {
-    if (!codertec_should_display_psicoassist_cta($post_id)) {
+function codertec_render_psicosense_cta($post_id = 0) {
+    if (!codertec_should_display_psicosense_cta($post_id)) {
         return;
     }
     ?>
-    <section class="codertec-product-cta mt-5" aria-label="CTA do PsicoAssist">
-        <h2 class="h4 mb-3">Conhe&ccedil;a o PsicoAssist</h2>
-        <p class="mb-4">O PsicoAssist &eacute; uma solu&ccedil;&atilde;o com IA e automa&ccedil;&atilde;o para psic&oacute;logos e cl&iacute;nicas organizarem atendimentos, reduzirem tarefas manuais e ganharem efici&ecirc;ncia.</p>
+    <section class="codertec-product-cta mt-5" aria-label="CTA do Psicosense">
+        <h2 class="h4 mb-3">Conhe&ccedil;a o Psicosense</h2>
+        <p class="mb-4">O Psicosense &eacute; uma solu&ccedil;&atilde;o com IA e automa&ccedil;&atilde;o para psic&oacute;logos e cl&iacute;nicas organizarem atendimentos, reduzirem tarefas manuais e ganharem efici&ecirc;ncia.</p>
         <div class="d-flex flex-wrap gap-3">
-            <a class="btn btn-primary" href="<?php echo esc_url('https://codertec.com.br/pt/produtos/psicoassist/'); ?>" <?php echo codertec_get_tracking_attributes(array('url' => 'https://codertec.com.br/pt/produtos/psicoassist/', 'area' => 'single_post_psicoassist_cta', 'label' => 'Ver resumo na CoderTec')); ?>>Ver resumo na CoderTec</a>
-            <a class="btn btn-outline-primary codertec-product-cta__secondary" href="<?php echo esc_url('https://psicoassist.codertec.com.br/'); ?>" <?php echo codertec_get_tracking_attributes(array('url' => 'https://psicoassist.codertec.com.br/', 'area' => 'single_post_psicoassist_cta', 'label' => 'Acessar landing do PsicoAssist')); ?>>Acessar landing do PsicoAssist</a>
+            <a class="btn btn-primary" href="<?php echo esc_url('https://psicosense.com.br/'); ?>" <?php echo codertec_get_tracking_attributes(array('url' => 'https://psicosense.com.br/', 'area' => 'single_post_psicosense_cta', 'label' => 'Conhecer o Psicosense')); ?>>Conhecer o Psicosense</a>
         </div>
     </section>
     <?php
@@ -786,13 +816,13 @@ function codertec_get_single_post_context_data($post_id = 0) {
     $post_id = $post_id ?: get_the_ID();
     $categories = get_the_category($post_id);
     $values = array(
-        codertec_normalize_psicoassist_context_value(get_post_field('post_name', $post_id)),
-        codertec_normalize_psicoassist_context_value(get_the_title($post_id)),
+        codertec_normalize_psicosense_context_value(get_post_field('post_name', $post_id)),
+        codertec_normalize_psicosense_context_value(get_the_title($post_id)),
     );
 
     foreach ($categories as $category) {
-        $values[] = codertec_normalize_psicoassist_context_value($category->slug);
-        $values[] = codertec_normalize_psicoassist_context_value($category->name);
+        $values[] = codertec_normalize_psicosense_context_value($category->slug);
+        $values[] = codertec_normalize_psicosense_context_value($category->name);
     }
 
     $values = array_values(array_unique(array_filter($values)));
@@ -832,14 +862,12 @@ function codertec_get_single_post_conversion_cta($post_id = 0) {
     $context_tokens = $context_data['tokens'];
     $services_url = 'https://codertec.com.br/pt/index.html#servicos';
 
-    if (codertec_should_display_psicoassist_cta($post_id)) {
+    if (codertec_should_display_psicosense_cta($post_id)) {
         return array(
-            'title' => 'Conheça o PsicoAssist',
-            'description' => 'Se este conteúdo conversa com a rotina de psicólogos e clínicas, o PsicoAssist pode ajudar a organizar atendimentos e reduzir tarefas manuais.',
-            'primary_label' => 'Ver página do PsicoAssist',
-            'primary_url' => 'https://codertec.com.br/pt/produtos/psicoassist/',
-            'secondary_label' => 'Acessar landing do PsicoAssist',
-            'secondary_url' => 'https://psicoassist.codertec.com.br/',
+            'title' => 'Conheça o Psicosense',
+            'description' => 'Se este conteúdo conversa com a rotina de psicólogos e clínicas, o Psicosense pode ajudar a organizar atendimentos e reduzir tarefas manuais.',
+            'primary_label' => 'Conhecer o Psicosense',
+            'primary_url' => 'https://psicosense.com.br/',
         );
     }
 
@@ -989,9 +1017,9 @@ function codertec_get_category_context_data($term = null) {
     }
 
     $values = array(
-        codertec_normalize_psicoassist_context_value($term->slug),
-        codertec_normalize_psicoassist_context_value($term->name),
-        codertec_normalize_psicoassist_context_value(wp_strip_all_tags(term_description($term, 'category'))),
+        codertec_normalize_psicosense_context_value($term->slug),
+        codertec_normalize_psicosense_context_value($term->name),
+        codertec_normalize_psicosense_context_value(wp_strip_all_tags(term_description($term, 'category'))),
     );
 
     $values = array_values(array_unique(array_filter($values)));
@@ -1064,12 +1092,12 @@ function codertec_get_category_archive_cta($term = null) {
     $context_tokens = $context_data['tokens'];
     $services_url = 'https://codertec.com.br/pt/index.html#servicos';
 
-    if (codertec_context_has_keyword_match($context_values, array('psicoassist', 'psicologia', 'psicologo', 'psicologos', 'clinica', 'clinicas', 'consultorio', 'consultorios', 'saude-mental'))) {
+    if (codertec_context_has_keyword_match($context_values, array('psicosense', 'psicoassist', 'psicologia', 'psicologo', 'psicologos', 'clinica', 'clinicas', 'consultorio', 'consultorios', 'saude-mental'))) {
         return array(
             'title' => 'Quer levar esse tema para a rotina da clínica?',
-            'description' => 'O PsicoAssist ajuda psicólogos e clínicas a organizar atendimentos, reduzir tarefas manuais e ganhar mais fluidez no dia a dia.',
-            'primary_label' => 'Conhecer o PsicoAssist',
-            'primary_url' => 'https://codertec.com.br/pt/produtos/psicoassist/',
+            'description' => 'O Psicosense ajuda psicólogos e clínicas a organizar atendimentos, reduzir tarefas manuais e ganhar mais fluidez no dia a dia.',
+            'primary_label' => 'Conhecer o Psicosense',
+            'primary_url' => 'https://psicosense.com.br/',
         );
     }
 
